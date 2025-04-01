@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: schedule-editor
+
+#const in app
+rag:
+  folder: rag_documents
+
+save:
+  folder: saved_schedules
+
+
+
+# Google Gemini
+langchain4j:
+  google-ai-gemini:
+    chat-model:
+      api-key: ${GOOGLE_GEMINI_API_KEY}
+      model-name: gemini-2.5-pro-exp-03-25
+
+# Logging
+
+server:
+  servlet:
+    context-path: /api/v1
+  error:
+    include-message: always
+
+springdoc:
+  default-produces-media-type: application/json
+logging:
+  level:
+    dev:
+      langchain4j: DEBUG
+
