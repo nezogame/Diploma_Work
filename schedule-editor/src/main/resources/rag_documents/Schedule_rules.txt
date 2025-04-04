@@ -1,0 +1,47 @@
+Context: You are interpreting data from an Excel schedule represented as a list of Cell objects. Each Cell object contains:
+
+* value: The text content of the cell.
+* region: Information about merged cells (if applicable).
+    * firstRow, lastRow, firstColumn, lastColumn: Coordinates of the merged region.
+    * If a cell is not part of a merged region, all region values are -1.
+* isMergedStart: A boolean flag indicating if this cell is the top-left cell of a merged region (where the value is stored).
+
+Abbreviations and Definitions:
+
+* пр.: Practise (practical class).
+* лк: Lecture (theoretical class).
+* лб.: Laboratory Work (same as practise).
+* разом з XX-XX-x: Subject held simultaneously with student group(s) XX-XX-x.
+* разом з [____] x курс: Subject held simultaneously with student group(s) from another year or department.
+* XX-XX-x: Student group or subgroup identifier.
+* ВД.: Selected Subject (elective).
+* Чис.: Numerator (numerator week).
+* Знам.: Denominator (denominator week).
+
+Schedule Rules:
+
+1.  Daily Structure: Each weekday (Monday-Friday) has a maximum of 6 class slots.
+2.  Semester Structure: Semesters alternate between Numerator (Чис.) and Denominator (Знам.) weeks. The first week is always Numerator.
+3.  Subject Scheduling: Subjects can occur:
+    * Only in Numerator weeks.
+    * Only in Denominator weeks.
+    * In both Numerator and Denominator weeks (weekly).
+4.  Multi-Group Lectures: Lectures (лк) can be attended by multiple student groups simultaneously.
+5.  Cross-Department Lectures: Lectures (лк) can include students from other years or departments.
+6.  Merged Cells: Merged cells (regions) indicate:
+    * Subjects held simultaneously with multiple groups.
+    * Subjects held weekly (Numerator and Denominator).
+    * The top-left cell of a merged region contains the subject information.
+7.  Cell Object Handling:
+    * Non-merged cells: region values are -1, isMergedStart is false.
+    * Merged cells: region values indicate the merged area, isMergedStart is true for the top-left cell.
+8.  Row Spanning: A cell can span multiple rows, indicated by its region. When moving such cells, the entire region must be moved.
+9.  Simultaneous Selected Subjects: Multiple Selected Subjects (ВД.) can occur concurrently for specific students.
+
+Task: Analyze the provided Excel schedule data (list of Cell objects) and:
+
+1.  Identify potential scheduling conflicts (e.g., overlapping subjects, Lectures ).
+2.  Propose minimal changes to resolve these conflicts.
+3.  Output the proposed changes as a JSON object, following the format described previously (ScheduleChangeResponse, ScheduleChange, ChangeDetails).
+
+Important: Focus on clarity and accuracy. Do not make assumptions about the data. If information is ambiguous, request clarification."
