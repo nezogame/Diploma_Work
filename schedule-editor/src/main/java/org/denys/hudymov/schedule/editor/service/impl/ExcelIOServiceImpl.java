@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -20,13 +21,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.denys.hudymov.schedule.editor.factory.ExcelWorkbookFactory.createWorkbook;
+import static org.denys.hudymov.schedule.editor.utils.excel.MergedRegionUtil.setCellInMergedRegion;
+import static org.denys.hudymov.schedule.editor.utils.factory.ExcelWorkbookFactory.createWorkbook;
 
 @Service
 public class ExcelIOServiceImpl implements ExcelIOService {
     @Override
     public Map<String, SheetDto> readExcelFile(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
+        String fileName = file.getName();
         Map<String, SheetDto> sheetData;
 
         try (
@@ -34,39 +36,40 @@ public class ExcelIOServiceImpl implements ExcelIOService {
                 Workbook workbook = createWorkbook(fileName, is)
         ) {
             sheetData = StreamSupport.stream(workbook.spliterator(), false)
-                    .collect(Collectors.toMap(
-                            Sheet::getSheetName,
-                            sheet -> SheetDto.builder()
-                                    .rowData(processSheet(sheet))
-                                    .build(),
-                            (oldValue, newValue) -> SheetDto.builder()
-                                    .rowData(
-                                            Stream.concat(oldValue.rowData().stream(), newValue.rowData().stream())
-                                                    .collect(Collectors.toList())
-                                    )
-                                    .build(),
-                            LinkedHashMap::new
-                    ));
+                    .collect(collectRowsIntoSheetMap());
         }
 
         return sheetData;
     }
 
+    private Collector<Sheet, ?, LinkedHashMap<String, SheetDto>> collectRowsIntoSheetMap() {
+        return Collectors.toMap(
+                Sheet::getSheetName,
+                sheet -> SheetDto.builder()
+                        .rowData(processSheet(sheet))
+                        .build(),
+                (oldValue, newValue) -> SheetDto.builder().rowData(
+                                Stream.concat(oldValue.rowData().stream(), newValue.rowData().stream())
+                                        .toList()
+                        )
+                        .build(),
+                LinkedHashMap::new);
+    }
+
     private List<RowDto> processSheet(Sheet sheet) {
         return StreamSupport.stream(sheet.spliterator(), false)
                 .map(row -> RowDto.builder()
-                        .cells(processRow(row))
+                        .rowNumber(row.getRowNum())
+                        .cells(processRow(sheet, row))
                         .build()
-                ).toList();
+                )
+                .toList();
     }
 
-    private List<CellDto> processRow(Row row) {
+    private List<CellDto> processRow(Sheet sheet, Row row) {
         return StreamSupport.stream(row.spliterator(), false)
-                .map(cell -> CellDto.builder()
-                        .cellStyle(cell.getCellStyle())
-                        .data(cell.toString())
-                        .build()
-                ).toList();
+                .map(cell -> setCellInMergedRegion(sheet, cell))
+                .toList();
     }
 
     @Override
