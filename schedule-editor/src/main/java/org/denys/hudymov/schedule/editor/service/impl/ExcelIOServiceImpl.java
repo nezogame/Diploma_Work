@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,12 +29,12 @@ import static org.denys.hudymov.schedule.editor.utils.factory.ExcelWorkbookFacto
 public class ExcelIOServiceImpl implements ExcelIOService {
     @Override
     public Map<String, SheetDto> readExcelFile(MultipartFile file) throws IOException {
-        String fileName = file.getName();
+        String fileName = file.getOriginalFilename();
         Map<String, SheetDto> sheetData;
 
         try (
                 InputStream is = file.getInputStream();
-                Workbook workbook = createWorkbook(fileName, is)
+                Workbook workbook = createWorkbook(Objects.requireNonNull(fileName), is)
         ) {
             sheetData = StreamSupport.stream(workbook.spliterator(), false)
                     .collect(collectRowsIntoSheetMap());
@@ -59,7 +60,6 @@ public class ExcelIOServiceImpl implements ExcelIOService {
     private List<RowDto> processSheet(Sheet sheet) {
         return StreamSupport.stream(sheet.spliterator(), false)
                 .map(row -> RowDto.builder()
-                        .rowNumber(row.getRowNum())
                         .cells(processRow(sheet, row))
                         .build()
                 )
