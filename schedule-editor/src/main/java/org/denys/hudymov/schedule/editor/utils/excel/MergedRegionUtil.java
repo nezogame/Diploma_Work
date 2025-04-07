@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.denys.hudymov.schedule.editor.domain.CellDto;
+import org.denys.hudymov.schedule.editor.domain.CoordinatesDto;
 import org.denys.hudymov.schedule.editor.domain.MergedRegion;
 
 public class MergedRegionUtil {
@@ -30,13 +31,23 @@ public class MergedRegionUtil {
                 return generateCellDto(cell, mergedRegion, !IS_MERGED_START);
             }
         }
-        return generateCellDto(cell, !IS_MERGED_START);
+        return generateCellDto(cell);
+    }
+
+    private static CellDto generateCellDto(Cell cell) {
+        return CellDto.builder()
+                .data(cell.toString())
+                .isMergedStart(!IS_MERGED_START)
+                .coordinate(generateCoordinates(cell))
+                .mergedRegion(MergedRegion.EMPTY_REGION)
+                .build();
     }
 
     private static CellDto generateCellDto(Cell cell, CellRangeAddress mergedRegion, boolean isMergedStart) {
         return CellDto.builder()
                 .data(cell.toString())
                 .isMergedStart(isMergedStart)
+                .coordinate(generateCoordinates(cell))
                 .mergedRegion(MergedRegion.builder()
                         .firstColumn(mergedRegion.getFirstColumn())
                         .firstRow(mergedRegion.getFirstRow())
@@ -46,11 +57,10 @@ public class MergedRegionUtil {
                 .build();
     }
 
-    private static CellDto generateCellDto(Cell cell, boolean isMergedStart) {
-        return CellDto.builder()
-                .data(cell.toString())
-                .isMergedStart(isMergedStart)
-                .mergedRegion(MergedRegion.EMPTY_REGION)
+    private static CoordinatesDto generateCoordinates(Cell cell) {
+        return CoordinatesDto.builder()
+                .row(cell.getRowIndex())
+                .col(cell.getColumnIndex())
                 .build();
     }
 }
