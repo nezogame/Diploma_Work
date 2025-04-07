@@ -15,7 +15,12 @@ public interface ScheduleAssistant {
             "any overlapping lecture subjects by reorganizing it as needed.")
     Result<ScheduleAnalyseResponse> generateSchedule(Workbook scheduleTemplate, Workbook educationalProgram);
 
-    @SystemMessage(fromResource = "Instruction_for_LLM/Schedule_rules.txt")
+    @SystemMessage("You are the schedule editor's assistant. " +
+            "Help the user check the schedule for the convenience and resolve " +
+            "any overlapping lecture subjects by reorganizing it as needed. " +
+            "Provide the resulting schedule in a clear, tabular format, " +
+            "suitable for direct copy-pasting into a spreadsheet." +
+            "Please explicitly mention any changes made to resolve overlapping subjects.")
     Result<ScheduleAnalyseResponse> generateSchedule(Map<String, SheetDto> scheduleData);
 
     @SystemMessage("You are the assistant to the schedule editor. " +

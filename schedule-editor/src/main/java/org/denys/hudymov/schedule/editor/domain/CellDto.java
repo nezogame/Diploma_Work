@@ -1,12 +1,11 @@
 package org.denys.hudymov.schedule.editor.domain;
 
 import lombok.Builder;
+import org.apache.poi.ss.usermodel.CellStyle;
 
 @Builder
 public record CellDto(
-        String data,
-        MergedRegion mergedRegion,
-        CoordinatesDto coordinate,
-        Boolean isMergedStart
+        CellStyle cellStyle,
+        String data
 ) {
 }
