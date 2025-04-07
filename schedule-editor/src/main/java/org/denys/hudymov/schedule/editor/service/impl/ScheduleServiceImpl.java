@@ -43,17 +43,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleAnalyseResponse reviewSchedule(MultipartFile scheduleFile) throws IOException {
+//        uploadFile(file);
         var scheduleTemplate = excelIOService.readExcelFile(scheduleFile);
-        var scheduleOwerviewResult = scheduleAssistant.generateSchedule(scheduleTemplate);
+//        var educationalProgram = getScheduleProgramContext();
+        var scheduleResult = scheduleAssistant.generateSchedule(scheduleTemplate);
         log.info("Tokens was used[{}], finish reason[{}]:, sources[{}]",
-                scheduleOwerviewResult.tokenUsage(),
-                scheduleOwerviewResult.finishReason(),
-                scheduleOwerviewResult.sources()
+                scheduleResult.tokenUsage(),
+                scheduleResult.finishReason(),
+                scheduleResult.sources()
 
         );
-        return scheduleOwerviewResult.content();
+        return scheduleResult.content();
     }
-
 
     private String saveScheduleFile(MultipartFile file) throws IOException {
         String dirPath = findCurrentPath();
