@@ -4,10 +4,9 @@ import lombok.Builder;
 
 @Builder
 public record CellDto(
-//        XSSFCellStyle cellStyle,
         String data,
         MergedRegion mergedRegion,
+        CoordinatesDto coordinate,
         Boolean isMergedStart
-
 ) {
 }

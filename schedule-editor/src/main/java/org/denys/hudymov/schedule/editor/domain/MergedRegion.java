@@ -17,4 +17,8 @@ public record MergedRegion(
             .firstRow(EMPTY_REGION_NUMBER)
             .firstColumn(EMPTY_REGION_NUMBER)
             .build();
+
+    public boolean isEmptyRegion() {
+        return this.equals(EMPTY_REGION);
+    }
 }

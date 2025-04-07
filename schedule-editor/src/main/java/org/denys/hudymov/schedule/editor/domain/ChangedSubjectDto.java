@@ -4,8 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record ChangedSubjectDto(
-        String changesDescription,
-        RowDto newChangeInRow,
-        RowDto changeAppliedToOtherRow
+        String changeDescription,
+        CellDto newChange
 ) {
 }
