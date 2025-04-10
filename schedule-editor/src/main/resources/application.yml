@@ -17,6 +17,7 @@ langchain4j:
     chat-model:
       api-key: ${GOOGLE_GEMINI_API_KEY}
       model-name: gemini-2.5-pro-exp-03-25
+      temperature: 0.1
 
 # Logging
 
@@ -32,4 +33,7 @@ logging:
   level:
     dev:
       langchain4j: DEBUG
+    org:
+      denys:
+        hudymov: DEBUG
 
