@@ -30,14 +30,14 @@ public class ControllerExceptionHandler {
             throw ex;
         }
 
-        var message = wrapMessageToResponse(ex.getMessage(),ex);
+        var message = wrapMessageToResponse(ex.getMessage(), ex);
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Error> handleNoSuchElementException(NoSuchElementException ex) {
-        var message = wrapMessageToResponse(ex.getMessage(),ex);
+        var message = wrapMessageToResponse(ex.getMessage(), ex);
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
@@ -54,7 +54,7 @@ public class ControllerExceptionHandler {
     }
 
     private Error wrapMessageToResponse(String exMessage, Throwable ex) {
-        log.error(exMessage,ex);
+        log.error(exMessage, ex);
         return new Error(exMessage);
     }
 
