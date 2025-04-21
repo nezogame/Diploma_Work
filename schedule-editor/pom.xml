@@ -31,6 +31,8 @@
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <version.mapstruct-lombok>0.2.0</version.mapstruct-lombok>
         <org.projectlombok.version>1.18.36</org.projectlombok.version>
+        <spring.boot.openapi.version>2.7.0</spring.boot.openapi.version>
+        <jakarta.validation.version>3.0.2</jakarta.validation.version>
     </properties>
     <dependencies>
         <!--lombok-->
@@ -55,12 +57,21 @@
             <scope>test</scope>
         </dependency>
         <!--LLM langchain4j dependency-->
-
+        <!--        <dependency>
+                    <groupId>dev.langchain4j</groupId>
+                    <artifactId>langchain4j-ollama</artifactId>
+                    <version>${langchain4j.version}</version>
+                </dependency>-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-google-ai-gemini-spring-boot-starter</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
+        <!--        <dependency>
+                    <groupId>dev.langchain4j</groupId>
+                    <artifactId>langchain4j-ollama-spring-boot-starter</artifactId>
+                    <version>${langchain4j.version}</version>
+                </dependency>-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-spring-boot-starter</artifactId>
@@ -81,13 +92,13 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.5.0</version>
+            <version>${spring.boot.openapi.version}</version>
         </dependency>
         <!--validation-->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version>
+            <version>${jakarta.validation.version}</version>
         </dependency>
         <!--mapstruct-->
         <dependency>
