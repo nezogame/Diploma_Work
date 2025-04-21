@@ -9,11 +9,14 @@ import java.util.Map;
 import org.denys.hudymov.schedule.editor.domain.ScheduleAnalyseDto;
 import org.denys.hudymov.schedule.editor.domain.SheetDto;
 
-@AiService
+import static dev.langchain4j.service.spring.AiServiceWiringMode.EXPLICIT;
+
+//ollamaChatModel
+@AiService(wiringMode = EXPLICIT, chatModel = "googleAiGeminiChatModel", tools = {"mergedRegionTool", "scheduleValidator"})
 public interface ScheduleAssistant {
     @SystemMessage(fromResource = "Instruction_for_LLM/Schedule_compose_rules.txt")
     @UserMessage("There is my schedule {{scheduleTemplate}} and educational program {{educationPlan}}, " +
-            "consider both and populate schedule with all data fromeducational program")
+            "consider both and populate schedule with all data from educational program")
     Result<ScheduleAnalyseDto> generateSchedule(@V("scheduleTemplate") Map<String, SheetDto> scheduleTemplate,
                                                 @V("educationPlan") Map<String, SheetDto> educationalProgram);
 

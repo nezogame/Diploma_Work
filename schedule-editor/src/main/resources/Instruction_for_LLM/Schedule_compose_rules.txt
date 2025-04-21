@@ -102,7 +102,7 @@ object contains the following attributes:
 ### Abbreviations and Definitions:
 - **Курс**: year of Studying.
 - **Назва дисципліни**: Subject name.
-- **1м**: If in Курс mena the same as 5 year of learning.
+- **1м**: If in **Курс** mean the same as 5 year of learning.
 - **П., і., п. керівника практичних (лабораторних, семінарських) занять**: Name of teacher for the laboratory work.
 - **П., і., п. лектора і його звання (посада)**: Name of teacher for the lectures.
 - **№ лаборато-рій для практичних (семінар-ських занять)**: just ignore this one column.
